@@ -21,7 +21,6 @@ The app needs a free Gemini API key from Google AI Studio, which it sends to Goo
 ## Screenshots
 
 <img src="docs/screenshots/01-SettingsPage.png" width="240" alt="Settings Page">
-<img src="docs/screenshots/02-EventLogPage.png" width="240" alt="Event Log Page">
 
 ## Getting started as a user
 
@@ -31,7 +30,7 @@ The app needs a free Gemini API key from Google AI Studio, which it sends to Goo
 4. Turn on the accessibility service **PushToTalkAi headset button**. If Android greys it out, open the App info of the app, use the menu and choose *Allow restricted settings* first.
 5. Turn on notification access for **PushToTalkAi music control**: it lets the app find Spotify.
 6. Open the app and press *Start the assistant* while it is on screen: Android only gives a background service the microphone when it starts like this. Then lock the phone and hold the centre button of your headset.
-7. To check that the button reaches the app with the screen off, press it with the phone locked, then open *Headset button log*.
+7. To check that the button reaches the app with the screen off, press it with the phone locked, then open *Logs* and look for the `HeadsetKey` lines.
 
 Requires Android 6.0 (API 23) or newer.
 

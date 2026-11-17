@@ -20,6 +20,7 @@ private val backStackConfig = SavedStateConfiguration {
     serializersModule = SerializersModule {
         polymorphic(NavKey::class) {
             subclass(Route.Settings::class, Route.Settings.serializer())
+            subclass(Route.EventLog::class, Route.EventLog.serializer())
             subclass(Route.Debug::class, Route.Debug.serializer())
             subclass(Route.Logs::class, Route.Logs.serializer())
             subclass(Route.Crashes::class, Route.Crashes.serializer())
@@ -29,7 +30,7 @@ private val backStackConfig = SavedStateConfiguration {
 
 /** Owns the back stack and the [NavDisplay]. Called only by [Root]. */
 @Composable
-fun AppNavigation() {
+fun AppNavigation(onRequestPermissions: () -> Unit) {
     val backStack = rememberNavBackStack(backStackConfig, Route.Settings)
 
     NavDisplay(
@@ -39,13 +40,13 @@ fun AppNavigation() {
             rememberSaveableStateHolderNavEntryDecorator(),
             rememberViewModelStoreNavEntryDecorator(),
         ),
-        entryProvider = { key -> routeEntryProvider(backStack, key) },
+        entryProvider = { key -> routeEntryProvider(backStack, key, onRequestPermissions) },
     )
 }
 
-private fun routeEntryProvider(backStack: NavBackStack<NavKey>, key: NavKey): NavEntry<NavKey> {
+private fun routeEntryProvider(backStack: NavBackStack<NavKey>, key: NavKey, onRequestPermissions: () -> Unit): NavEntry<NavKey> {
     val route = key as Route
     return NavEntry(route) {
-        Router(backStack, route)
+        Router(backStack, route, onRequestPermissions)
     }
 }

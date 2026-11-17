@@ -43,12 +43,17 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
 
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.websockets)
+
             implementation(libs.common)
         }
         // What has no version for every target stays here, and moves to the source set of the targets that have it
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.androidx.core.ktx)
+            implementation(libs.ktor.client.okhttp) // the OkHttp engine is Android only
             implementation(libs.koin.android)
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.room.runtime)

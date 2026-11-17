@@ -1,7 +1,7 @@
 package com.lukeneedham.pushtotalkai
 
 import android.app.Application
-import com.lukeneedham.pushtotalkai.di.AndroidModule
+import com.lukeneedham.pushtotalkai.assistant.AssistantModule
 import com.lukeneedham.pushtotalkai.di.KoinModules
 import com.lukeneedham.pushtotalkai.network.NetworkModule
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +14,7 @@ class App : Application() {
         initDebugKit(BuildConfig.DEBUG)
         startKoin {
             androidContext(this@App)
-            modules(KoinModules.modules + AndroidModule.bindings + NetworkModule.bindings)
+            modules(KoinModules.modules + AssistantModule.bindings + NetworkModule.bindings)
         }
     }
 }

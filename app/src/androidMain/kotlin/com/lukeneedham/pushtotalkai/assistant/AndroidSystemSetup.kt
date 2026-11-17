@@ -21,9 +21,13 @@ class AndroidSystemSetup(private val context: Context) : SystemSetup {
         isBatteryUnrestricted = context.getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(context.packageName),
     )
 
-    override fun openAccessibilitySettings() = open(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+    override fun openAccessibilitySettings() {
+        open(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+    }
 
-    override fun openNotificationAccessSettings() = open(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+    override fun openNotificationAccessSettings() {
+        open(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+    }
 
     override fun openBatterySettings() {
         val request = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:${context.packageName}"))

@@ -1,9 +1,9 @@
 package com.lukeneedham.pushtotalkai
 
 import android.app.Application
-import com.lukeneedham.pushtotalkai.assistant.AssistantModule
+import com.lukeneedham.pushtotalkai.di.AssistantModule
 import com.lukeneedham.pushtotalkai.di.KoinModules
-import com.lukeneedham.pushtotalkai.network.NetworkModule
+import com.lukeneedham.pushtotalkai.di.NetworkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 

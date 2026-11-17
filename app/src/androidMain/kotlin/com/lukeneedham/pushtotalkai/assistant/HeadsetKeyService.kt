@@ -3,36 +3,44 @@ package com.lukeneedham.pushtotalkai.assistant
 import android.accessibilityservice.AccessibilityService
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
+import com.lukeneedham.common.logger.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
  * Sees every hardware key before any app does (`flagRequestFilterKeyEvents`). The centre button of the headset is consumed while the
- * assistant runs, so Spotify never sees it. Every key is logged, which shows whether the button arrives with the screen off.
+ * assistant runs, so Spotify and Google Assistant never see it. Every key is logged (tag `HeadsetKey`), which shows whether the
+ * button arrives with the screen off, and what it looks like.
  */
 class HeadsetKeyService : AccessibilityService(), KoinComponent {
 
     private val controller: AssistantController by inject()
-    private val keyEventLog: KeyEventLog by inject()
     private val status: AssistantStatusStore by inject()
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    private val timeFormat = SimpleDateFormat("HH:mm:ss.SSS", Locale.US)
     private val gestures = HeadsetButtonGestures(scope = scope, onGesture = ::onGesture)
 
     // Whether the press that is going on now is ours: its up must be consumed too
     private var isConsumingPress = false
 
+    override fun onServiceConnected() {
+        super.onServiceConnected()
+        // 0x20 is FLAG_REQUEST_FILTER_KEY_EVENTS: without it Android never shows this service the keys
+        Logger.i("HeadsetKey: service connected, flags=0x${(serviceInfo?.flags ?: 0).toString(16)}, assistant=${status.state.value}")
+    }
+
     override fun onKeyEvent(event: KeyEvent): Boolean {
-        val consumed = event.keyCode in HeadsetKeyCodes.centreButton && handleCentreButton(event)
-        log(event, consumed)
+        val isCentre = HeadsetKeyCodes.isCentreButton(event)
+        val consumed = isCentre && handleCentreButton(event)
+        Logger.i(
+            "HeadsetKey: ${actionName(event)} ${KeyEvent.keyCodeToString(event.keyCode)} (code ${event.keyCode}, scan ${event.scanCode}) " +
+                "repeat=${event.repeatCount} flags=0x${event.flags.toString(16)} source=0x${event.source.toString(16)} " +
+                "device=${event.device?.name} centre=$isCentre consumed=$consumed assistant=${status.state.value}",
+        )
         return consumed
     }
 
@@ -41,6 +49,7 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
     override fun onInterrupt() = Unit
 
     override fun onDestroy() {
+        Logger.i("HeadsetKey: service destroyed")
         scope.cancel()
         super.onDestroy()
     }
@@ -60,6 +69,7 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
     }
 
     private fun onGesture(gesture: HeadsetGesture) {
+        Logger.i("HeadsetKey: gesture $gesture")
         when (gesture) {
             HeadsetGesture.HoldStart -> controller.onHoldStart()
             HeadsetGesture.HoldEnd -> controller.onHoldEnd()
@@ -67,19 +77,9 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
         }
     }
 
-    private fun log(event: KeyEvent, consumed: Boolean) {
-        val action = when (event.action) {
-            KeyEvent.ACTION_DOWN -> "DOWN"
-            KeyEvent.ACTION_UP -> "UP"
-            else -> event.action.toString()
-        }
-        keyEventLog.add(
-            KeyLogEntry(
-                time = timeFormat.format(Date()),
-                key = KeyEvent.keyCodeToString(event.keyCode),
-                action = action,
-                detail = "dev=${event.device?.name} repeat=${event.repeatCount}${if (consumed) " consumed" else ""}",
-            ),
-        )
+    private fun actionName(event: KeyEvent) = when (event.action) {
+        KeyEvent.ACTION_DOWN -> "DOWN"
+        KeyEvent.ACTION_UP -> "UP"
+        else -> "ACTION_${event.action}"
     }
 }

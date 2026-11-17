@@ -16,12 +16,10 @@ fun Router(backStack: NavBackStack<NavKey>, route: Route, onRequestPermissions: 
 
     when (route) { // exhaustive: no `else`
         Route.Settings -> SettingsPage(
-            onOpenEventLog = { navigateTo(Route.EventLog) },
+            onOpenLogs = { navigateTo(Route.Logs) },
             onOpenDebug = { navigateTo(Route.Debug) },
             onRequestPermissions = onRequestPermissions,
         )
-
-        Route.EventLog -> EventLogPage(onBack = ::onBack)
 
         Route.Debug -> DebugPage(
             onBack = ::onBack,

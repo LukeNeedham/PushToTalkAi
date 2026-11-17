@@ -22,9 +22,5 @@
     <string name="settings_notification_access_description">Lets the app find Spotify, to skip songs and play what you ask for.</string>
     <string name="settings_battery_title">Battery: unrestricted</string>
     <string name="settings_battery_description">Keeps Android from stopping the assistant in your pocket.</string>
-    <string name="settings_event_log">Headset button log</string>
-    <string name="event_log_title">Headset button log</string>
-    <string name="event_log_back">Back</string>
-    <string name="event_log_clear">Clear</string>
-    <string name="event_log_empty">No key events yet. Turn on the accessibility service, lock the phone, press the headset button, then come back.</string>
+    <string name="settings_logs">Logs (headset button, Gemini, Spotify)</string>
 </resources>

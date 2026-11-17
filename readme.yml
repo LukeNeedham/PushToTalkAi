@@ -21,7 +21,7 @@ user:
     - "Turn on the accessibility service **PushToTalkAi headset button**. If Android greys it out, open the App info of the app, use the menu and choose *Allow restricted settings* first."
     - "Turn on notification access for **PushToTalkAi music control**: it lets the app find Spotify."
     - "Open the app and press *Start the assistant* while it is on screen: Android only gives a background service the microphone when it starts like this. Then lock the phone and hold the centre button of your headset."
-    - "To check that the button reaches the app with the screen off, press it with the phone locked, then open *Headset button log*."
+    - "To check that the button reaches the app with the screen off, press it with the phone locked, then open *Logs* and look for the `HeadsetKey` lines."
 
 developer:
   notes: |

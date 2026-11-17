@@ -24,6 +24,7 @@ class AndroidMusicControls(private val context: Context) : MusicControls {
 
     override suspend fun sendCommand(command: MusicCommand): Boolean {
         val controller = findController()
+        Logger.i("Music: $command, session=${controller?.packageName}")
         if (controller != null) {
             val controls = controller.transportControls
             when (command) {
@@ -41,6 +42,7 @@ class AndroidMusicControls(private val context: Context) : MusicControls {
 
     override suspend fun playFromSearch(query: String): Boolean {
         val controller = findController(spotifyOnly = true)
+        Logger.i("Music: play \"$query\", Spotify session=${controller?.packageName}")
         if (controller != null) {
             controller.transportControls.playFromSearch(query, Bundle())
             return true

@@ -24,7 +24,7 @@ import com.lukeneedham.pushtotalkai.generated.resources.settings_accessibility_t
 import com.lukeneedham.pushtotalkai.generated.resources.settings_api_key
 import com.lukeneedham.pushtotalkai.generated.resources.settings_battery_description
 import com.lukeneedham.pushtotalkai.generated.resources.settings_battery_title
-import com.lukeneedham.pushtotalkai.generated.resources.settings_event_log
+import com.lukeneedham.pushtotalkai.generated.resources.settings_logs
 import com.lukeneedham.pushtotalkai.generated.resources.settings_microphone_description
 import com.lukeneedham.pushtotalkai.generated.resources.settings_microphone_title
 import com.lukeneedham.pushtotalkai.generated.resources.settings_model
@@ -60,7 +60,7 @@ internal fun SettingsPageContent(
     onOpenAccessibility: () -> Unit,
     onOpenNotificationAccess: () -> Unit,
     onOpenBattery: () -> Unit,
-    onOpenEventLog: () -> Unit,
+    onOpenLogs: () -> Unit,
     onOpenDebug: () -> Unit,
 ) {
     val theme = AppTheme.current
@@ -141,7 +141,7 @@ internal fun SettingsPageContent(
             actionLabel = stringResource(Res.string.settings_open),
             onAction = onOpenBattery,
         )
-        AppButton(text = stringResource(Res.string.settings_event_log), onClick = onOpenEventLog)
+        AppButton(text = stringResource(Res.string.settings_logs), onClick = onOpenLogs)
         // Draws nothing unless debugging is on, so it stays in the layout for release builds
         if (state.isDebugEnabled) DebugButton(onClick = onOpenDebug)
     }
@@ -185,7 +185,7 @@ private fun Preview() {
             onOpenAccessibility = {},
             onOpenNotificationAccess = {},
             onOpenBattery = {},
-            onOpenEventLog = {},
+            onOpenLogs = {},
             onOpenDebug = {},
         )
     }

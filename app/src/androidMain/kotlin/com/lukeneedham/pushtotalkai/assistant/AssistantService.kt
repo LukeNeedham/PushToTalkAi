@@ -35,6 +35,7 @@ class AssistantService : Service(), KoinComponent {
             createChannel()
             ServiceCompat.startForeground(this, notificationId, buildNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
             status.set(AssistantState.Idle)
+            Logger.i("Assistant: service started")
         } catch (e: Exception) {
             // Android refuses a microphone service that starts without the permission or from the background
             Logger.e("The assistant service could not start", e)
@@ -45,6 +46,7 @@ class AssistantService : Service(), KoinComponent {
     }
 
     override fun onDestroy() {
+        Logger.i("Assistant: service stopped")
         controller.shutdown()
         if (status.state.value !is AssistantState.Error) status.set(AssistantState.Stopped)
         super.onDestroy()

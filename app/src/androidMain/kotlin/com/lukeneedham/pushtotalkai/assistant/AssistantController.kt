@@ -50,6 +50,7 @@ class AssistantController(
 
     fun onClicks(count: Int) {
         scope.launch {
+            Logger.i("Assistant: $count click(s)")
             val command = when (count) {
                 1 -> MusicCommand.PlayPause
                 2 -> MusicCommand.Next
@@ -71,7 +72,11 @@ class AssistantController(
     }
 
     private suspend fun startHold() {
-        if (isHolding || status.state.value is AssistantState.Stopped) return
+        if (isHolding || status.state.value is AssistantState.Stopped) {
+            Logger.w("Assistant: hold ignored (holding=$isHolding, state=${status.state.value})")
+            return
+        }
+        Logger.i("Assistant: hold started")
         val settings = settingsStore.settings.first()
         if (settings.apiKey.isBlank()) {
             fail("No API key: paste it into the app")
@@ -103,6 +108,7 @@ class AssistantController(
 
     private suspend fun endHold() {
         if (!isHolding) return
+        Logger.i("Assistant: hold ended")
         isHolding = false
         recordJob?.cancelAndJoin()
         recordJob = null
@@ -128,13 +134,16 @@ class AssistantController(
 
     private suspend fun openSession(settings: AssistantSettings): GeminiLiveSession {
         session?.takeIf { it.isOpen }?.let { return it }
+        Logger.i("Assistant: connecting to Gemini, model ${settings.model}")
         val live = liveClient.connect(settings, tools.declarations, scope)
+        Logger.i("Assistant: connected to Gemini")
         session = live
         eventsJob = scope.launch { live.events.collect { handle(live, it) } }
         return live
     }
 
     private suspend fun handle(live: GeminiLiveSession, event: LiveEvent) {
+        if (event !is LiveEvent.Audio) Logger.d("Assistant: Gemini sent $event")
         when (event) {
             is LiveEvent.Audio -> {
                 player.enqueue(event.pcm)
@@ -147,7 +156,11 @@ class AssistantController(
                 finishTurn()
             }
             is LiveEvent.ToolCalls -> {
-                val results = event.calls.map { it to tools.run(it) }
+                val results = event.calls.map { call ->
+                    val result = tools.run(call)
+                    Logger.i("Assistant: ${call.name}(${call.args}) -> $result")
+                    call to result
+                }
                 live.sendToolResponses(results)
                 armWatchdog()
             }
@@ -183,6 +196,7 @@ class AssistantController(
     }
 
     private fun fail(message: String) {
+        Logger.e("Assistant: failed: $message")
         cancelWork()
         isHolding = false
         player.flush()

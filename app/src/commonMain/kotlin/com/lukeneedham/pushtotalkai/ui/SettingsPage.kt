@@ -10,7 +10,7 @@ import org.koin.compose.viewmodel.koinViewModel
 /** The page: connects to the ViewModel and the navigation, and delegates all UI. No preview. */
 @Composable
 fun SettingsPage(
-    onOpenEventLog: () -> Unit,
+    onOpenLogs: () -> Unit,
     onOpenDebug: () -> Unit,
     onRequestPermissions: () -> Unit,
 ) {
@@ -26,7 +26,7 @@ fun SettingsPage(
         onOpenAccessibility = viewModel::onOpenAccessibility,
         onOpenNotificationAccess = viewModel::onOpenNotificationAccess,
         onOpenBattery = viewModel::onOpenBattery,
-        onOpenEventLog = onOpenEventLog,
+        onOpenLogs = onOpenLogs,
         onOpenDebug = onOpenDebug,
     )
 }

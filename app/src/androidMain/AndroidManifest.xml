@@ -34,6 +34,27 @@
             </intent-filter>
         </activity>
 
+        <!-- Opened by Android when the headset button is held: a voice search (hands-free with the screen off or the phone locked) -->
+        <activity
+            android:name=".VoiceRequestActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.speech.action.VOICE_SEARCH_HANDS_FREE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.speech.action.WEB_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VOICE_COMMAND" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- Sees the centre button of the headset before any media app does -->
         <service
             android:name=".assistant.HeadsetKeyService"

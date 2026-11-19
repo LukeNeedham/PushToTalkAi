@@ -27,13 +27,26 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
     // Whether the press that is going on now is ours: its up must be consumed too
     private var isConsumingPress = false
 
+    override fun onCreate() {
+        super.onCreate()
+        Logger.i("HeadsetKey: service created")
+    }
+
     override fun onServiceConnected() {
         super.onServiceConnected()
         // 0x20 is FLAG_REQUEST_FILTER_KEY_EVENTS: without it Android never shows this service the keys
         Logger.i("HeadsetKey: service connected, flags=0x${(serviceInfo?.flags ?: 0).toString(16)}, assistant=${status.state.value}")
     }
 
-    override fun onKeyEvent(event: KeyEvent): Boolean {
+    override fun onKeyEvent(event: KeyEvent): Boolean = try {
+        handleKeyEvent(event)
+    } catch (e: Exception) {
+        // A crash here would switch the service off, and every key after it would go unseen
+        Logger.e("HeadsetKey: failed to handle ${event.keyCode}", e)
+        false
+    }
+
+    private fun handleKeyEvent(event: KeyEvent): Boolean {
         val isCentre = HeadsetKeyCodes.isCentreButton(event)
         val consumed = isCentre && handleCentreButton(event)
         Logger.i(
@@ -46,7 +59,14 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) = Unit
 
-    override fun onInterrupt() = Unit
+    override fun onInterrupt() {
+        Logger.w("HeadsetKey: interrupted")
+    }
+
+    override fun onUnbind(intent: android.content.Intent?): Boolean {
+        Logger.w("HeadsetKey: service unbound (switched off in Android?)")
+        return super.onUnbind(intent)
+    }
 
     override fun onDestroy() {
         Logger.i("HeadsetKey: service destroyed")

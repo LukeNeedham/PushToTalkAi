@@ -2,6 +2,7 @@ package com.lukeneedham.pushtotalkai.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lukeneedham.common.logger.Logger
 import com.lukeneedham.pushtotalkai.assistant.AssistantSettings
 import com.lukeneedham.pushtotalkai.assistant.AssistantState
 import com.lukeneedham.pushtotalkai.assistant.AssistantStatusStore
@@ -57,6 +58,7 @@ class SettingsViewModel(
     /** Called when the page comes back to the front: the user may have switched something on in Android. */
     fun refreshSetup() {
         setup.value = systemSetup.readStatus()
+        Logger.i("Setup: ${setup.value}")
     }
 
     fun onToggleAssistant() {

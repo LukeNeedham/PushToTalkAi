@@ -1,6 +1,7 @@
 package com.lukeneedham.pushtotalkai
 
 import android.app.Application
+import com.lukeneedham.common.logger.Logger
 import com.lukeneedham.pushtotalkai.di.AssistantModule
 import com.lukeneedham.pushtotalkai.di.KoinModules
 import com.lukeneedham.pushtotalkai.di.NetworkModule
@@ -16,5 +17,6 @@ class App : Application() {
             androidContext(this@App)
             modules(KoinModules.modules + AssistantModule.bindings + NetworkModule.bindings)
         }
+        Logger.i("App: started, version ${BuildConfig.VERSION_NAME}, debug=${BuildConfig.DEBUG}")
     }
 }

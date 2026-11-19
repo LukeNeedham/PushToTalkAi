@@ -1,5 +1,6 @@
 package com.lukeneedham.pushtotalkai.di
 
+import com.lukeneedham.pushtotalkai.assistant.ActiveMediaSessions
 import com.lukeneedham.pushtotalkai.assistant.AndroidMusicControls
 import com.lukeneedham.pushtotalkai.assistant.AndroidSystemSetup
 import com.lukeneedham.pushtotalkai.assistant.AssistantController
@@ -23,7 +24,8 @@ object AssistantModule {
     val bindings = module {
         single { SettingsDataStoreFactory.create(androidContext()) }
         single<SettingsStore> { DataStoreSettingsStore(get()) }
-        single<MusicControls> { AndroidMusicControls(androidContext()) }
+        single { ActiveMediaSessions(androidContext()) }
+        single<MusicControls> { AndroidMusicControls(androidContext(), get()) }
         single<SystemSetup> { AndroidSystemSetup(androidContext()) }
         single { AudioFocusHolder(androidContext()) }
         single { AudioCues() }
@@ -31,6 +33,6 @@ object AssistantModule {
         singleOf(::SpeechPlayer)
         singleOf(::AssistantController)
         singleOf(::HeadsetButtonInput)
-        single { MediaButtonSession(androidContext(), get()) }
+        single { MediaButtonSession(androidContext(), get(), get()) }
     }
 }

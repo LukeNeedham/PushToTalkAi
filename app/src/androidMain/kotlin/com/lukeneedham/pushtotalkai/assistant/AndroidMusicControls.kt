@@ -1,13 +1,11 @@
 package com.lukeneedham.pushtotalkai.assistant
 
 import android.app.SearchManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.media.MediaMetadata
 import android.media.session.MediaController
-import android.media.session.MediaSessionManager
 import android.media.session.PlaybackState
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,12 +13,13 @@ import android.view.KeyEvent
 import com.lukeneedham.common.logger.Logger
 
 /** Controls Spotify through its media session (needs notification access), and falls back to media keys. */
-class AndroidMusicControls(private val context: Context) : MusicControls {
+class AndroidMusicControls(
+    private val context: Context,
+    private val sessions: ActiveMediaSessions,
+) : MusicControls {
 
     private val audioManager = context.getSystemService(AudioManager::class.java)
-    private val sessionManager = context.getSystemService(MediaSessionManager::class.java)
-    private val listenerComponent = ComponentName(context, MediaSessionAccess::class.java)
-    private val spotifyPackage = "com.spotify.music"
+    private val spotifyPackage = sessions.spotifyPackage
 
     override suspend fun sendCommand(command: MusicCommand): Boolean {
         val controller = findController()
@@ -72,15 +71,7 @@ class AndroidMusicControls(private val context: Context) : MusicControls {
         return if (isPlaying) "$song (playing)" else "$song (paused)"
     }
 
-    private fun findController(spotifyOnly: Boolean = false): MediaController? = try {
-        // Not this app's own session: it only receives the media buttons
-        val sessions = sessionManager.getActiveSessions(listenerComponent).filter { it.packageName != context.packageName }
-        sessions.firstOrNull { it.packageName == spotifyPackage } ?: sessions.firstOrNull().takeUnless { spotifyOnly }
-    } catch (e: SecurityException) {
-        // Notification access is not switched on
-        Logger.w("No access to the media sessions", e)
-        null
-    }
+    private fun findController(spotifyOnly: Boolean = false): MediaController? = sessions.find(spotifyOnly)
 
     private fun dispatchMediaKey(command: MusicCommand): Boolean {
         val keyCode = when (command) {

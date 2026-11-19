@@ -11,11 +11,12 @@ import com.lukeneedham.common.logger.Logger
 /**
  * The second way to get the centre button. The USB-C EarPods button does not go through the accessibility key filter (volume does), so
  * Android sends it to the media session that is "playing" most recently. While the assistant runs, this app holds such a session, which
- * does no audio: it only receives the media buttons, and takes them away from Spotify and Google Assistant.
+ * does no audio: it receives the media buttons, keeps the centre button, and passes all the others on to Spotify.
  */
 class MediaButtonSession(
     private val context: Context,
     private val input: HeadsetButtonInput,
+    private val sessions: ActiveMediaSessions,
 ) {
     private var session: MediaSession? = null
 
@@ -59,12 +60,18 @@ class MediaButtonSession(
             "MediaButton: ${if (event.action == KeyEvent.ACTION_DOWN) "DOWN" else "UP"} ${KeyEvent.keyCodeToString(event.keyCode)} " +
                 "(code ${event.keyCode}, scan ${event.scanCode}) repeat=${event.repeatCount} flags=0x${event.flags.toString(16)} centre=$isCentre",
         )
-        if (!isCentre) return false
+        if (!isCentre) return forwardToSpotify(event)
         when (event.action) {
             KeyEvent.ACTION_DOWN -> if (event.repeatCount == 0) input.onDown()
             KeyEvent.ACTION_UP -> input.onUp()
         }
         return true
+    }
+
+    /** Every other button (next, previous, stop...) still does its normal job: this session only keeps the centre button for itself. */
+    private fun forwardToSpotify(event: KeyEvent): Boolean {
+        val controller = sessions.find(spotifyOnly = true) ?: return false
+        return controller.dispatchMediaButtonEvent(event)
     }
 
     @Suppress("DEPRECATION")

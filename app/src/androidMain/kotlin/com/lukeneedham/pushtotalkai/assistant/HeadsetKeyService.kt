@@ -4,10 +4,6 @@ import android.accessibilityservice.AccessibilityService
 import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 import com.lukeneedham.common.logger.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -18,11 +14,8 @@ import org.koin.core.component.inject
  */
 class HeadsetKeyService : AccessibilityService(), KoinComponent {
 
-    private val controller: AssistantController by inject()
+    private val input: HeadsetButtonInput by inject()
     private val status: AssistantStatusStore by inject()
-
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
-    private val gestures = HeadsetButtonGestures(scope = scope, onGesture = ::onGesture)
 
     // Whether the press that is going on now is ours: its up must be consumed too
     private var isConsumingPress = false
@@ -70,7 +63,6 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
 
     override fun onDestroy() {
         Logger.i("HeadsetKey: service destroyed")
-        scope.cancel()
         super.onDestroy()
     }
 
@@ -79,22 +71,13 @@ class HeadsetKeyService : AccessibilityService(), KoinComponent {
         if (isNewPress) isConsumingPress = status.state.value !is AssistantState.Stopped
         if (!isConsumingPress) return false
         when (event.action) {
-            KeyEvent.ACTION_DOWN -> if (isNewPress) gestures.onDown()
+            KeyEvent.ACTION_DOWN -> if (isNewPress) input.onDown()
             KeyEvent.ACTION_UP -> {
                 isConsumingPress = false
-                gestures.onUp()
+                input.onUp()
             }
         }
         return true
-    }
-
-    private fun onGesture(gesture: HeadsetGesture) {
-        Logger.i("HeadsetKey: gesture $gesture")
-        when (gesture) {
-            HeadsetGesture.HoldStart -> controller.onHoldStart()
-            HeadsetGesture.HoldEnd -> controller.onHoldEnd()
-            is HeadsetGesture.Clicks -> controller.onClicks(gesture.count)
-        }
     }
 
     private fun actionName(event: KeyEvent) = when (event.action) {

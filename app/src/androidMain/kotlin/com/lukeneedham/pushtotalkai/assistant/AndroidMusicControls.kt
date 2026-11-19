@@ -73,7 +73,8 @@ class AndroidMusicControls(private val context: Context) : MusicControls {
     }
 
     private fun findController(spotifyOnly: Boolean = false): MediaController? = try {
-        val sessions = sessionManager.getActiveSessions(listenerComponent)
+        // Not this app's own session: it only receives the media buttons
+        val sessions = sessionManager.getActiveSessions(listenerComponent).filter { it.packageName != context.packageName }
         sessions.firstOrNull { it.packageName == spotifyPackage } ?: sessions.firstOrNull().takeUnless { spotifyOnly }
     } catch (e: SecurityException) {
         // Notification access is not switched on

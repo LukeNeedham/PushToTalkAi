@@ -6,6 +6,8 @@ import com.lukeneedham.pushtotalkai.assistant.AssistantController
 import com.lukeneedham.pushtotalkai.assistant.AudioCues
 import com.lukeneedham.pushtotalkai.assistant.AudioFocusHolder
 import com.lukeneedham.pushtotalkai.assistant.DataStoreSettingsStore
+import com.lukeneedham.pushtotalkai.assistant.HeadsetButtonInput
+import com.lukeneedham.pushtotalkai.assistant.MediaButtonSession
 import com.lukeneedham.pushtotalkai.assistant.MicRecorder
 import com.lukeneedham.pushtotalkai.assistant.MusicControls
 import com.lukeneedham.pushtotalkai.assistant.SettingsDataStoreFactory
@@ -28,5 +30,7 @@ object AssistantModule {
         singleOf(::MicRecorder)
         singleOf(::SpeechPlayer)
         singleOf(::AssistantController)
+        singleOf(::HeadsetButtonInput)
+        single { MediaButtonSession(androidContext(), get()) }
     }
 }

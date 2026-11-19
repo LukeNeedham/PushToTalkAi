@@ -24,6 +24,7 @@ class AssistantService : Service(), KoinComponent {
 
     private val status: AssistantStatusStore by inject()
     private val controller: AssistantController by inject()
+    private val mediaButtonSession: MediaButtonSession by inject()
 
     private val channelId = "assistant"
     private val notificationId = 1
@@ -34,6 +35,7 @@ class AssistantService : Service(), KoinComponent {
         try {
             createChannel()
             ServiceCompat.startForeground(this, notificationId, buildNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_MICROPHONE)
+            mediaButtonSession.start()
             status.set(AssistantState.Idle)
             Logger.i("Assistant: service started")
         } catch (e: Exception) {
@@ -47,6 +49,7 @@ class AssistantService : Service(), KoinComponent {
 
     override fun onDestroy() {
         Logger.i("Assistant: service stopped")
+        mediaButtonSession.stop()
         controller.shutdown()
         if (status.state.value !is AssistantState.Error) status.set(AssistantState.Stopped)
         super.onDestroy()

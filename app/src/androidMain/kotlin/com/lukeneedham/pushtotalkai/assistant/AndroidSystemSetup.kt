@@ -19,6 +19,7 @@ class AndroidSystemSetup(private val context: Context) : SystemSetup {
         isNotificationAccessOn = NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName),
         isMicrophoneGranted = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED,
         isBatteryUnrestricted = context.getSystemService(PowerManager::class.java).isIgnoringBatteryOptimizations(context.packageName),
+        isDefaultAssistant = isDefaultAssistant(),
     )
 
     override fun openAccessibilitySettings() {
@@ -34,6 +35,10 @@ class AndroidSystemSetup(private val context: Context) : SystemSetup {
         if (!open(request)) open(Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS))
     }
 
+    override fun openAssistantSettings() {
+        if (!open(Intent(Settings.ACTION_VOICE_INPUT_SETTINGS))) open(Intent(Settings.ACTION_SETTINGS))
+    }
+
     override fun startAssistant() {
         try {
             ContextCompat.startForegroundService(context, Intent(context, AssistantService::class.java))
@@ -44,6 +49,16 @@ class AndroidSystemSetup(private val context: Context) : SystemSetup {
 
     override fun stopAssistant() {
         context.stopService(Intent(context, AssistantService::class.java))
+    }
+
+    /** The setting names the selected assistant as `package/class`. */
+    private fun isDefaultAssistant(): Boolean = listOf("voice_interaction_service", "assistant").any { key ->
+        val value = try {
+            Settings.Secure.getString(context.contentResolver, key)
+        } catch (e: Exception) {
+            null
+        }
+        value != null && ComponentName.unflattenFromString(value)?.packageName == context.packageName
     }
 
     private fun isAccessibilityServiceOn(): Boolean {

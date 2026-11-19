@@ -71,6 +71,8 @@ class SettingsViewModel(
 
     fun onOpenBattery() = systemSetup.openBatterySettings()
 
+    fun onOpenAssistantSettings() = systemSetup.openAssistantSettings()
+
     private fun update(settings: AssistantSettings) {
         draft.value = settings
         viewModelScope.launch { settingsStore.save(settings) }

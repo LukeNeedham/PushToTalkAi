@@ -21,6 +21,7 @@ private fun SettingsPageScreenshot() {
             isNotificationAccessOn = false,
             isMicrophoneGranted = true,
             isBatteryUnrestricted = false,
+            isDefaultAssistant = false,
         ),
         assistant = AssistantState.Idle,
     )
@@ -34,6 +35,7 @@ private fun SettingsPageScreenshot() {
             onOpenAccessibility = {},
             onOpenNotificationAccess = {},
             onOpenBattery = {},
+            onOpenAssistantSettings = {},
             onOpenLogs = {},
             onOpenDebug = {},
         )

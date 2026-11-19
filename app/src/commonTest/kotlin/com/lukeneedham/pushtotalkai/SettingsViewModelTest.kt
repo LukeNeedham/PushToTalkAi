@@ -39,10 +39,12 @@ class SettingsViewModelTest {
             isNotificationAccessOn = false,
             isMicrophoneGranted = true,
             isBatteryUnrestricted = false,
+            isDefaultAssistant = false,
         )
         override fun openAccessibilitySettings() = Unit
         override fun openNotificationAccessSettings() = Unit
         override fun openBatterySettings() = Unit
+        override fun openAssistantSettings() = Unit
         override fun startAssistant() {
             started++
         }

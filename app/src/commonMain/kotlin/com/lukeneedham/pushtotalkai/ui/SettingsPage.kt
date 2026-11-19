@@ -26,6 +26,7 @@ fun SettingsPage(
         onOpenAccessibility = viewModel::onOpenAccessibility,
         onOpenNotificationAccess = viewModel::onOpenNotificationAccess,
         onOpenBattery = viewModel::onOpenBattery,
+        onOpenAssistantSettings = viewModel::onOpenAssistantSettings,
         onOpenLogs = onOpenLogs,
         onOpenDebug = onOpenDebug,
     )

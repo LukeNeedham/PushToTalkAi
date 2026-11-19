@@ -6,4 +6,5 @@ data class SetupStatus(
     val isNotificationAccessOn: Boolean,
     val isMicrophoneGranted: Boolean,
     val isBatteryUnrestricted: Boolean,
+    val isDefaultAssistant: Boolean,
 )

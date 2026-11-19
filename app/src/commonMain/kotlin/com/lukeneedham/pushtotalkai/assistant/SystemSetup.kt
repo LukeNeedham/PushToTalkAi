@@ -10,6 +10,8 @@ interface SystemSetup {
 
     fun openBatterySettings()
 
+    fun openAssistantSettings()
+
     fun startAssistant()
 
     fun stopAssistant()

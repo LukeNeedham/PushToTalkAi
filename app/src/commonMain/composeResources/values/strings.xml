@@ -22,5 +22,7 @@
     <string name="settings_notification_access_description">Lets the app find Spotify, to skip songs and play what you ask for.</string>
     <string name="settings_battery_title">Battery: unrestricted</string>
     <string name="settings_battery_description">Keeps Android from stopping the assistant in your pocket.</string>
+    <string name="settings_default_assistant_title">Default assistant (experiment)</string>
+    <string name="settings_default_assistant_description">Lets Android hand the headset long press to this app. Choose PushToTalkAi as the digital assistant app.</string>
     <string name="settings_logs">Logs (headset button, Gemini, Spotify)</string>
 </resources>

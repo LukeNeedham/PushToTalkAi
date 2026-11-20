@@ -1,9 +1,35 @@
 # The data of README.md: CI renders it in the standard layout (docs/readme.md in LukeNeedham/ci-workflows). Written by hand, only what is
-# specific to the app; never edit README.md. The text below is a placeholder: replace it, and keep it accurate.
+# specific to the app; never edit README.md.
 
 name: "PushToTalkAi"
-tagline: "TODO: one line saying what the app does."
+tagline: "Hold the centre button of your headset and talk to Gemini, with the phone locked in your pocket."
 
 description: |
-  TODO: what the app is and who it is for, with a few highlights of what it can be used for. A paragraph or two,
-  and no feature list.
+  PushToTalkAi turns the centre button of wired earphones into a push-to-talk key for a live voice chat with Google Gemini. It
+  sees the button even with the screen off and Spotify playing, so it fits cycling with the phone in a pocket. Hold the button
+  while you speak and let go to send: Gemini answers in your ears.
+
+  Gemini can control Spotify for you: skip a song, go back, pause or resume, say what is playing, or search for a song and play it.
+  While the assistant runs, a quick press still plays or pauses, two presses skip and three go back, because the app consumes the button.
+
+  The app needs a free Gemini API key from Google AI Studio, which it sends to Google together with your voice. It has no server of its own.
+
+user:
+  steps:
+    - "Create a free API key at Google AI Studio and paste it into the app. Pick another Gemini Live model on the same page if the default is retired."
+    - "Allow the microphone and notifications, and set the battery of the app to Unrestricted."
+    - "Turn on the accessibility service **PushToTalkAi headset button**. If Android greys it out, open the App info of the app, use the menu and choose *Allow restricted settings* first."
+    - "Turn on notification access for **PushToTalkAi music control**: it lets the app find Spotify."
+    - "Open the app and press *Start the assistant* while it is on screen: Android only gives a background service the microphone when it starts like this. Then lock the phone and hold the centre button of your headset."
+    - "To check that the button reaches the app with the screen off, press it with the phone locked, then open *Logs* and look for the `HeadsetKey` lines."
+
+developer:
+  notes: |
+    The Gemini Live API is used over a WebSocket, with manual activity detection (`activityStart` and `activityEnd`), and the app's
+    functions are declared in `AssistantToolRunner`. Nothing can be built or run in the sandbox that wrote the code: CI is the build.
+
+sections:
+  - title: Privacy
+    body: |
+      Your voice is streamed to Google's Gemini API with your own API key while the button is held. The key is stored in the app's
+      private storage, and the app has no other server and collects nothing else.

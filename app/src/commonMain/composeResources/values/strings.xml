@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="settings_title">Settings</string>
+    <string name="settings_title">PushToTalkAi</string>
+    <string name="settings_state_stopped">Stopped. The headset button works as usual.</string>
+    <string name="settings_state_idle">Ready. Hold the centre button of your headset and talk.</string>
+    <string name="settings_state_listening">Listening…</string>
+    <string name="settings_state_responding">Gemini is answering…</string>
+    <string name="settings_state_error">Problem: %1$s</string>
+    <string name="settings_start">Start the assistant</string>
+    <string name="settings_stop">Stop the assistant</string>
+    <string name="settings_api_key">Gemini API key (Google AI Studio)</string>
+    <string name="settings_model">Gemini Live model</string>
+    <string name="settings_setup_done">On</string>
+    <string name="settings_setup_needed">Needed</string>
+    <string name="settings_grant">Allow</string>
+    <string name="settings_open">Open</string>
+    <string name="settings_microphone_title">Microphone and notifications</string>
+    <string name="settings_microphone_description">The microphone hears you while the button is held. Start the assistant while the app is open.</string>
+    <string name="settings_accessibility_title">Headset button (accessibility)</string>
+    <string name="settings_accessibility_description">Lets the app see the headset button before Spotify does, with the screen off.</string>
+    <string name="settings_notification_access_title">Music control (notification access)</string>
+    <string name="settings_notification_access_description">Lets the app find Spotify, to skip songs and play what you ask for.</string>
+    <string name="settings_battery_title">Battery: unrestricted</string>
+    <string name="settings_battery_description">Keeps Android from stopping the assistant in your pocket.</string>
+    <string name="settings_default_assistant_title">Default assistant (experiment)</string>
+    <string name="settings_default_assistant_description">Lets Android hand the headset long press to this app. Choose PushToTalkAi as the digital assistant app.</string>
+    <string name="settings_app_info">App info (menu: Allow restricted settings)</string>
+    <string name="settings_logs">Logs (headset button, Gemini, Spotify)</string>
 </resources>

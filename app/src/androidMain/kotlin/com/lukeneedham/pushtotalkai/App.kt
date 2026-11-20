@@ -1,7 +1,10 @@
 package com.lukeneedham.pushtotalkai
 
 import android.app.Application
+import com.lukeneedham.common.logger.Logger
+import com.lukeneedham.pushtotalkai.di.AssistantModule
 import com.lukeneedham.pushtotalkai.di.KoinModules
+import com.lukeneedham.pushtotalkai.di.NetworkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -12,7 +15,8 @@ class App : Application() {
         initDebugKit(BuildConfig.DEBUG)
         startKoin {
             androidContext(this@App)
-            modules(KoinModules.modules)
+            modules(KoinModules.modules + AssistantModule.bindings + NetworkModule.bindings)
         }
+        Logger.i("App: started, version ${BuildConfig.VERSION_NAME}, debug=${BuildConfig.DEBUG}")
     }
 }

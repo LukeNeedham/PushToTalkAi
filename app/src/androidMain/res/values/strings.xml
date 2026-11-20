@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">PushToTalkAi</string>
+    <string name="accessibility_label">PushToTalkAi headset button</string>
+    <string name="accessibility_description">Reads the centre button of your headset, even with the screen off, so that holding it can start a voice chat. It reads no screen content and no other keys.</string>
+    <string name="notification_access_label">PushToTalkAi music control</string>
+    <string name="notification_channel_name">Assistant</string>
+    <string name="notification_title">PushToTalkAi is ready</string>
+    <string name="notification_text">Hold the centre button of your headset to talk</string>
 </resources>

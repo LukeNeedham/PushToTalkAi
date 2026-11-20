@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:recognitionService="com.lukeneedham.pushtotalkai.assistant.AssistantRecognitionService"
+    android:sessionService="com.lukeneedham.pushtotalkai.assistant.AssistantSessionService"
+    android:supportsAssist="true"
+    android:supportsLaunchVoiceAssistFromKeyguard="true" />

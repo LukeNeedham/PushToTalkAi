@@ -9,13 +9,17 @@ import com.lukeneedham.common.ui.LogsPage
 
 /** Calls the page of [route], with the navigation as lambdas. The only place that calls a page. */
 @Composable
-fun Router(backStack: NavBackStack<NavKey>, route: Route) {
+fun Router(backStack: NavBackStack<NavKey>, route: Route, onRequestPermissions: () -> Unit) {
     // The common actions are defined once here, never repeated in each branch
     fun navigateTo(target: Route) { backStack.add(target) }
     fun onBack() { backStack.removeLastOrNull() }
 
     when (route) { // exhaustive: no `else`
-        Route.Settings -> SettingsPage(onOpenDebug = { navigateTo(Route.Debug) })
+        Route.Settings -> SettingsPage(
+            onOpenLogs = { navigateTo(Route.Logs) },
+            onOpenDebug = { navigateTo(Route.Debug) },
+            onRequestPermissions = onRequestPermissions,
+        )
 
         Route.Debug -> DebugPage(
             onBack = ::onBack,

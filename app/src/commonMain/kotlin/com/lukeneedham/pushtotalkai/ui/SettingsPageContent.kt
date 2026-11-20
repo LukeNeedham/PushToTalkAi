@@ -22,6 +22,7 @@ import com.lukeneedham.pushtotalkai.generated.resources.Res
 import com.lukeneedham.pushtotalkai.generated.resources.settings_accessibility_description
 import com.lukeneedham.pushtotalkai.generated.resources.settings_accessibility_title
 import com.lukeneedham.pushtotalkai.generated.resources.settings_api_key
+import com.lukeneedham.pushtotalkai.generated.resources.settings_app_info
 import com.lukeneedham.pushtotalkai.generated.resources.settings_battery_description
 import com.lukeneedham.pushtotalkai.generated.resources.settings_battery_title
 import com.lukeneedham.pushtotalkai.generated.resources.settings_default_assistant_description
@@ -63,6 +64,7 @@ internal fun SettingsPageContent(
     onOpenNotificationAccess: () -> Unit,
     onOpenBattery: () -> Unit,
     onOpenAssistantSettings: () -> Unit,
+    onOpenAppInfo: () -> Unit,
     onOpenLogs: () -> Unit,
     onOpenDebug: () -> Unit,
 ) {
@@ -152,6 +154,7 @@ internal fun SettingsPageContent(
             actionLabel = stringResource(Res.string.settings_open),
             onAction = onOpenAssistantSettings,
         )
+        AppButton(text = stringResource(Res.string.settings_app_info), onClick = onOpenAppInfo)
         AppButton(text = stringResource(Res.string.settings_logs), onClick = onOpenLogs)
         // Draws nothing unless debugging is on, so it stays in the layout for release builds
         if (state.isDebugEnabled) DebugButton(onClick = onOpenDebug)
@@ -198,6 +201,7 @@ private fun Preview() {
             onOpenNotificationAccess = {},
             onOpenBattery = {},
             onOpenAssistantSettings = {},
+            onOpenAppInfo = {},
             onOpenLogs = {},
             onOpenDebug = {},
         )

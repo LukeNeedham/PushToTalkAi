@@ -24,5 +24,6 @@
     <string name="settings_battery_description">Keeps Android from stopping the assistant in your pocket.</string>
     <string name="settings_default_assistant_title">Default assistant (experiment)</string>
     <string name="settings_default_assistant_description">Lets Android hand the headset long press to this app. Choose PushToTalkAi as the digital assistant app.</string>
+    <string name="settings_app_info">App info (menu: Allow restricted settings)</string>
     <string name="settings_logs">Logs (headset button, Gemini, Spotify)</string>
 </resources>

@@ -45,6 +45,7 @@ class SettingsViewModelTest {
         override fun openNotificationAccessSettings() = Unit
         override fun openBatterySettings() = Unit
         override fun openAssistantSettings() = Unit
+        override fun openAppInfo() = Unit
         override fun startAssistant() {
             started++
         }

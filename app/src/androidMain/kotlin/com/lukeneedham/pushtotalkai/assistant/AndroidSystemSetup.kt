@@ -39,6 +39,10 @@ class AndroidSystemSetup(private val context: Context) : SystemSetup {
         if (!open(Intent(Settings.ACTION_VOICE_INPUT_SETTINGS))) open(Intent(Settings.ACTION_SETTINGS))
     }
 
+    override fun openAppInfo() {
+        open(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}")))
+    }
+
     override fun startAssistant() {
         try {
             ContextCompat.startForegroundService(context, Intent(context, AssistantService::class.java))

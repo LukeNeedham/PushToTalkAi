@@ -36,6 +36,7 @@ private fun SettingsPageScreenshot() {
             onOpenNotificationAccess = {},
             onOpenBattery = {},
             onOpenAssistantSettings = {},
+            onOpenAppInfo = {},
             onOpenLogs = {},
             onOpenDebug = {},
         )

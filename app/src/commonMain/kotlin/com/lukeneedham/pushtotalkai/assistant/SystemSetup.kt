@@ -12,6 +12,9 @@ interface SystemSetup {
 
     fun openAssistantSettings()
 
+    /** The App info page of this app, where "Allow restricted settings" is in the menu. */
+    fun openAppInfo()
+
     fun startAssistant()
 
     fun stopAssistant()
